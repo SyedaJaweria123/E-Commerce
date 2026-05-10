@@ -1,0 +1,85 @@
+<!-- SIGNUP FORM -->
+<div class="sf-wrap">
+
+  <h2 class="sf-title">WELCOME</h2>
+  <p class="sf-sub">Create your account</p>
+
+  <div class="sf-alert sf-error"   *ngIf="errorMsg">{{ errorMsg }}</div>
+  <div class="sf-alert sf-success" *ngIf="successMsg">{{ successMsg }}</div>
+
+  <form (ngSubmit)="onSignup()" class="sf-form">
+
+    <div class="sf-row">
+      <div class="sf-field">
+        <label class="sf-label">First Name <span class="sf-req">*</span></label>
+        <input type="text" [(ngModel)]="firstName" name="firstName" class="sf-input" placeholder="First name" required/>
+      </div>
+      <div class="sf-field">
+        <label class="sf-label">Last Name <span class="sf-req">*</span></label>
+        <input type="text" [(ngModel)]="lastName" name="lastName" class="sf-input" placeholder="Last name" required/>
+      </div>
+    </div>
+
+    <div class="sf-field">
+      <label class="sf-label">Email <span class="sf-req">*</span></label>
+      <input type="email" [(ngModel)]="email" name="email" class="sf-input" placeholder="Enter your email" required/>
+    </div>
+
+    <div class="sf-field">
+      <label class="sf-label">Confirm Email <span class="sf-req">*</span></label>
+      <input type="email" [(ngModel)]="confirmEmail" name="confirmEmail" class="sf-input" placeholder="Confirm your email" required/>
+    </div>
+
+    <div class="sf-field">
+      <label class="sf-label">Password <span class="sf-req">*</span></label>
+      <div class="sf-pass">
+        <input [type]="showPass ? 'text' : 'password'" [(ngModel)]="password" name="password" class="sf-input" placeholder="Min 6 characters" required/>
+        <button type="button" class="sf-eye" (click)="showPass = !showPass">
+          <svg *ngIf="!showPass" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+            <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+            <line x1="1" y1="1" x2="23" y2="23"/>
+          </svg>
+          <svg *ngIf="showPass" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+        </button>
+      </div>
+      <!-- Strength bar -->
+      <div class="sf-strength-track" *ngIf="password">
+        <div class="sf-strength-fill" [style.width]="strengthWidth" [style.background]="strengthColor"></div>
+      </div>
+      <span class="sf-strength-lbl" *ngIf="password" [style.color]="strengthColor">{{ strengthLabel }}</span>
+    </div>
+
+    <div class="sf-field">
+      <label class="sf-label">Confirm Password <span class="sf-req">*</span></label>
+      <div class="sf-pass">
+        <input [type]="showConfirm ? 'text' : 'password'" [(ngModel)]="confirmPassword" name="confirmPassword" class="sf-input" placeholder="Repeat password" required/>
+        <button type="button" class="sf-eye" (click)="showConfirm = !showConfirm">
+          <svg *ngIf="!showConfirm" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+            <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+            <line x1="1" y1="1" x2="23" y2="23"/>
+          </svg>
+          <svg *ngIf="showConfirm" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <label class="sf-newsletter">
+      <input type="checkbox" [(ngModel)]="newsletter" name="newsletter" class="sf-chk"/>
+      Sign Up for Newsletter
+    </label>
+
+    <button type="submit" class="sf-btn" [disabled]="loading">
+      <span *ngIf="!loading">CREATE ACCOUNT</span>
+      <span *ngIf="loading" class="sf-spinner"></span>
+    </button>
+
+  </form>
+</div>

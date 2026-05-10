@@ -1,0 +1,176 @@
+<div class="fav-page">
+
+  <!-- ══ GUEST NOTICE BAR (exactly like Khaadi) ══ -->
+  <div class="fav-notice-bar" *ngIf="!currentUser">
+    If you are not signed in, your wishlist items will get removed at the end of this session
+    <a (click)="openLogin()">Sign In</a>
+  </div>
+
+  <!-- ══ MAIN LAYOUT: LEFT products + RIGHT login card ══ -->
+  <div class="fav-main-layout">
+
+    <!-- ════ LEFT: PRODUCT GRID ════ -->
+    <div class="fav-left" [class.fav-left-full]="currentUser">
+
+      <!-- EMPTY STATE -->
+      <div class="empty-state" *ngIf="favProducts.length === 0">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none"
+          stroke="#ccc" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06
+                   a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78
+                   1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+        <h3>No Favourites Yet</h3>
+        <p>Browse our products and tap ♡ to save them here.</p>
+        <a routerLink="/shop" class="shop-link">Go to Shop</a>
+      </div>
+
+      <!-- PRODUCTS -->
+      <div class="fav-grid" *ngIf="favProducts.length > 0">
+        <div class="fav-card" *ngFor="let p of favProducts">
+
+          <!-- IMAGE BLOCK -->
+          <div class="fav-card-img">
+            <img [src]="p.image" [alt]="p.name" loading="lazy" (click)="openDetail(p)">
+
+            <!-- HEART btn top-right — pink filled like screenshot -->
+            <button class="fav-heart-btn" (click)="removeFav(p)" title="Remove from Wishlist">
+              <svg width="18" height="18" viewBox="0 0 24 24"
+                fill="#e05070" stroke="#e05070" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06
+                         a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78
+                         1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+            </button>
+
+            <!-- ADD btn — bottom left like Khaadi -->
+            <button class="fav-add-btn" (click)="addToCart(p)">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+              </svg>
+              ADD
+            </button>
+
+            <!-- Small red dot — Khaadi indicator -->
+            <span class="fav-dot-indicator"></span>
+          </div>
+
+          <!-- CARD INFO BELOW IMAGE -->
+          <div class="fav-card-info">
+            <p class="fav-card-cat">{{ p.category || 'Skincare' }} | {{ p.type || 'Premium' }}</p>
+            <h4 class="fav-card-name" (click)="openDetail(p)">{{ p.name }}</h4>
+            <p class="fav-card-price">PKR {{ p.price | number:'1.0-0' }}</p>
+            <span class="fav-card-badge">New</span>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ════ RIGHT: LOGIN CARD (only when guest) ════ -->
+    <div class="fav-right" *ngIf="!currentUser">
+      <div class="fav-login-card">
+        <h2 class="lc-title">WELCOME</h2>
+        <p class="lc-sub">Sign in to your account</p>
+
+        <div class="lc-field">
+          <label>Email <span class="req">*</span></label>
+          <input type="email" [(ngModel)]="loginEmail" autocomplete="email">
+        </div>
+
+        <div class="lc-field">
+          <label>Password <span class="req">*</span></label>
+          <div class="lc-pass-wrap">
+            <input [type]="showPass ? 'text' : 'password'" [(ngModel)]="loginPassword" autocomplete="current-password">
+            <button class="lc-eye" (click)="showPass = !showPass" type="button">
+              <svg *ngIf="!showPass" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="#bbb" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+                <line x1="1" y1="1" x2="23" y2="23"/>
+              </svg>
+              <svg *ngIf="showPass" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="#bbb" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="lc-row">
+          <label class="lc-check-label">
+            <input type="checkbox" [(ngModel)]="rememberMe"> Remember me
+          </label>
+          <a class="lc-forgot" href="#">Forgot Password?</a>
+        </div>
+
+        <p class="lc-error" *ngIf="loginError">{{ loginError }}</p>
+        <button class="lc-login-btn" (click)="doLogin()">LOGIN</button>
+
+        <div class="lc-divider"><span>OR LOGIN WITH</span></div>
+
+        <div class="lc-social">
+          <!-- Google -->
+          <button class="lc-social-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24">
+              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+            </svg>
+          </button>
+          <!-- Facebook -->
+          <button class="lc-social-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#1877F2">
+              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+            </svg>
+          </button>
+          <!-- Chat -->
+          <button class="lc-social-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="#555" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          </button>
+        </div>
+
+        <p class="lc-signup-row">
+          Don't have account? <a (click)="openLogin()" style="cursor:pointer">Sign Up</a>
+        </p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ PRODUCT DETAIL MODAL ══ -->
+<div class="modal-backdrop" [class.active]="selectedProduct" (click)="closeDetail()">
+  <div class="modal" (click)="$event.stopPropagation()" *ngIf="selectedProduct">
+    <button class="modal-close" (click)="closeDetail()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="modal-img-side">
+      <img [src]="selectedProduct.image" [alt]="selectedProduct.name">
+    </div>
+    <div class="modal-info-side">
+      <p class="modal-cat">Skincare · Glowora</p>
+      <h2>{{ selectedProduct.name }}</h2>
+      <hr>
+      <p class="modal-desc">{{ selectedProduct.description }}</p>
+      <div class="modal-meta">
+        <div class="meta-item"><span class="meta-lbl">Skin Type</span><span class="meta-val">All Types</span></div>
+        <div class="meta-item"><span class="meta-lbl">Volume</span><span class="meta-val">50 ml</span></div>
+        <div class="meta-item"><span class="meta-lbl">Stock</span><span class="meta-val in-stock">In Stock</span></div>
+      </div>
+      <div class="modal-footer">
+        <span class="modal-price">PKR {{ selectedProduct.price | number:'1.0-0' }}</span>
+        <button class="modal-add-btn" (click)="addToCart(selectedProduct); closeDetail()">Add to Bag</button>
+      </div>
+    </div>
+  </div>
+</div>

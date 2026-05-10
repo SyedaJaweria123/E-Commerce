@@ -1,0 +1,255 @@
+<div class="checkout-page">
+
+  <!-- TOP BAR -->
+  <div class="checkout-topbar">
+    <a routerLink="/addtocard" class="edit-bag-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M15 18l-6-6 6-6"/>
+      </svg>
+      EDIT BAG
+    </a>
+    <div class="brand-logo">Cosmetopia</div>
+    <div></div>
+  </div>
+
+  <!-- MAIN LAYOUT -->
+  <div class="checkout-layout">
+
+    <!-- ══ LEFT: FORM ══ -->
+    <div class="checkout-form-side">
+
+      <!-- STEP 1: CONTACT -->
+      <div class="step-block" [class.completed]="currentStep > 1">
+        <div class="step-header">
+          <span class="step-num" [class.done]="currentStep > 1">
+            <span *ngIf="currentStep <= 1">1</span>
+            <svg *ngIf="currentStep > 1" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+              <path d="M20 6L9 17l-5-5"/>
+            </svg>
+          </span>
+          <h3 class="step-title">Contact Information</h3>
+        </div>
+
+        <div class="step-body" *ngIf="currentStep === 1">
+          <div class="field-group">
+            <input
+              type="email"
+              class="field-input"
+              placeholder="Email *"
+              [(ngModel)]="email"
+              name="email">
+          </div>
+
+          <div class="alert-error" *ngIf="errorMsg">{{ errorMsg }}</div>
+
+          <button class="proceed-btn" (click)="proceedToShipping()">
+            PROCEED TO SHIPPING
+          </button>
+
+          <div class="divider-or">
+            <span class="divider-line"></span>
+            <span class="divider-text">OR SIGN IN WITH</span>
+            <span class="divider-line"></span>
+          </div>
+
+          <div class="social-login">
+            <button class="social-btn google-btn">
+              <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+            </button>
+            <button class="social-btn fb-btn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Completed summary -->
+        <div class="step-summary" *ngIf="currentStep > 1">
+          <span class="summary-val">{{ email }}</span>
+          <button class="change-btn" (click)="currentStep = 1">Change</button>
+        </div>
+      </div>
+
+      <!-- STEP 2: SHIPPING -->
+      <div class="step-block" *ngIf="currentStep >= 2">
+        <div class="step-header">
+          <span class="step-num">2</span>
+          <h3 class="step-title">Shipping</h3>
+        </div>
+
+        <div class="step-body">
+
+          <!-- Name row -->
+          <div class="field-row">
+            <div class="field-group">
+              <input type="text" class="field-input" placeholder="First Name *" [(ngModel)]="firstName" name="firstName">
+            </div>
+            <div class="field-group">
+              <input type="text" class="field-input" placeholder="Last Name *" [(ngModel)]="lastName" name="lastName">
+            </div>
+          </div>
+
+          <div class="field-group">
+            <input type="text" class="field-input" placeholder="Address Line 1 *" [(ngModel)]="address1" name="address1">
+          </div>
+
+          <div class="field-group">
+            <input type="text" class="field-input" placeholder="Address Line 2 (Optional)" [(ngModel)]="address2" name="address2">
+          </div>
+
+          <!-- Country -->
+          <div class="field-group">
+            <div class="select-wrap">
+              <select class="field-input field-select" disabled>
+                <option>Pakistan</option>
+              </select>
+              <span class="select-flag">🇵🇰</span>
+            </div>
+          </div>
+
+          <!-- Province + City row -->
+          <div class="field-row">
+            <div class="field-group">
+              <select class="field-input field-select" [(ngModel)]="province" name="province">
+                <option value="">Province *</option>
+                <option *ngFor="let p of provinces">{{ p }}</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <select class="field-input field-select" [(ngModel)]="city" name="city">
+                <option value="">City *</option>
+                <option *ngFor="let c of cities">{{ c }}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <input type="text" class="field-input" placeholder="Postal Code" [(ngModel)]="postalCode" name="postalCode">
+          </div>
+
+          <!-- Phone -->
+          <div class="field-group phone-group">
+            <div class="phone-prefix">🇵🇰 +92</div>
+            <input type="tel" class="field-input phone-input" placeholder="03XXXXXXXXX *" [(ngModel)]="phone" name="phone">
+          </div>
+
+          <!-- PAYMENT -->
+          <div class="payment-section">
+            <h4 class="payment-title">Payment Method</h4>
+
+            <div class="payment-options">
+              <label class="payment-option" [class.selected]="payment === 'cod'">
+                <input type="radio" name="payment" value="cod" [(ngModel)]="payment">
+                <span class="option-radio"></span>
+                <span class="option-label">💵 Cash on Delivery</span>
+              </label>
+
+              <label class="payment-option" [class.selected]="payment === 'card'">
+                <input type="radio" name="payment" value="card" [(ngModel)]="payment">
+                <span class="option-radio"></span>
+                <span class="option-label">💳 Credit / Debit Card</span>
+                <div class="card-logos">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/200px-Mastercard-logo.svg.png" height="20" alt="MC">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/200px-Visa_Inc._logo.svg.png" height="14" alt="Visa">
+                </div>
+              </label>
+            </div>
+
+            <!-- Card fields -->
+            <div class="card-fields" *ngIf="payment === 'card'">
+              <div class="field-group">
+                <input type="text" class="field-input" placeholder="Card Number" [(ngModel)]="cardNumber" maxlength="19">
+              </div>
+              <div class="field-group">
+                <input type="text" class="field-input" placeholder="Card Holder Name" [(ngModel)]="cardName">
+              </div>
+              <div class="field-row">
+                <div class="field-group">
+                  <input type="text" class="field-input" placeholder="MM / YY" [(ngModel)]="cardExpiry" maxlength="5">
+                </div>
+                <div class="field-group">
+                  <input type="text" class="field-input" placeholder="CVV" [(ngModel)]="cardCvv" maxlength="3">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- MESSAGES -->
+          <div class="alert-error"   *ngIf="errorMsg">⚠️ {{ errorMsg }}</div>
+          <div class="alert-success" *ngIf="successMsg">🎉 {{ successMsg }}</div>
+
+          <!-- PLACE ORDER BTN -->
+          <button class="place-order-btn" (click)="placeOrder()" [disabled]="loading">
+            <span *ngIf="!loading">PLACE ORDER — Rs.{{ grandTotal | number }}</span>
+            <span *ngIf="loading" class="btn-spinner"></span>
+          </button>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ══ RIGHT: ORDER SUMMARY ══ -->
+    <div class="order-summary-side">
+
+      <div class="summary-card">
+        <div class="summary-title-row">
+          <h3 class="summary-title">ORDER SUMMARY ({{ cart.getTotalItems() }})</h3>
+          <span class="summary-top-price">Rs.{{ grandTotal | number }}</span>
+        </div>
+
+        <!-- ITEMS -->
+        <div class="summary-items">
+          <div class="summary-item" *ngFor="let item of cartItems">
+            <div class="si-img-wrap">
+              <img [src]="item.image" [alt]="item.name" class="si-img">
+              <span class="si-qty-badge">{{ item.qty }}</span>
+            </div>
+            <div class="si-info">
+              <p class="si-name">{{ item.name }}</p>
+              <p class="si-price">Rs.{{ parsePrice(item.price) | number }}</p>
+              <p class="si-qty-text">QUANTITY: {{ item.qty }}</p>
+            </div>
+          </div>
+        </div>
+
+        <hr class="summary-divider">
+
+        <!-- AMOUNT BREAKDOWN -->
+        <div class="amount-summary">
+          <h4 class="amount-title">AMOUNT SUMMARY</h4>
+
+          <div class="amount-row">
+            <span>SUBTOTAL <small>(Inclusive of Tax)</small></span>
+            <span>Rs.{{ subtotal | number }}</span>
+          </div>
+          <div class="amount-row">
+            <span>SHIPPING</span>
+            <span [class.free-ship]="shipping === 0">
+              {{ shipping === 0 ? 'FREE' : 'Rs.' + (shipping | number) }}
+            </span>
+          </div>
+          <div class="amount-row">
+            <span>FBR POS</span>
+            <span>Rs.{{ fbrTax }}</span>
+          </div>
+
+          <hr class="dashed-line">
+
+          <div class="amount-row total-row">
+            <span>TOTAL (PKR)</span>
+            <span class="total-val">Rs.{{ grandTotal | number }}</span>
+          </div>
+
+          <hr class="dashed-line">
+
+          <p class="delivery-note">
+            Nationwide orders will be delivered within 5–7 business days.
+            Discounted items are non-exchangeable & non-returnable.
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>

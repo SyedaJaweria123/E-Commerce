@@ -1,0 +1,195 @@
+/* ═══════════════════════════════════
+   LOGIN FORM — Smooth & Refined
+═══════════════════════════════════ */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+.lf-wrap {
+  padding: 44px 40px 28px;
+  font-family: 'Poppins', sans-serif;
+  animation: lfFadeIn 0.3s ease 0.05s both;
+}
+
+@keyframes lfFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.lf-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: #1a1a1a;
+  text-align: center;
+  margin: 0 0 6px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.lf-sub {
+  font-size: 13px;
+  color: #b0b0b0;
+  text-align: center;
+  margin: 0 0 30px;
+  font-weight: 300;
+}
+
+/* Alerts */
+.lf-alert {
+  padding: 11px 14px;
+  border-radius: 10px;
+  font-size: 12.5px;
+  margin-bottom: 18px;
+  animation: alertPop 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes alertPop {
+  from { transform: scale(0.95); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
+}
+.lf-error   { background: #fff0f3; color: #c0143c; border: 1px solid #ffc0cb; }
+.lf-success { background: #f0faf2; color: #2e7d32; border: 1px solid #b2dfb6; }
+
+/* Form */
+.lf-form { display: flex; flex-direction: column; }
+
+.lf-field {
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.lf-label {
+  display: block;
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 7px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  transition: color 0.2s;
+}
+.lf-field:focus-within .lf-label { color: #990c52; }
+
+.lf-req { color: #e53935; margin-left: 2px; }
+
+.lf-input {
+  width: 100%;
+  border: none;
+  border-bottom: 1.5px solid #e8e8e8;
+  padding: 10px 0;
+  font-size: 14px;
+  color: #1a1a1a;
+  outline: none;
+  background: transparent;
+  box-sizing: border-box;
+  font-family: inherit;
+  transition: border-color 0.25s;
+}
+.lf-input:focus { border-bottom-color: #990c52; }
+.lf-input::placeholder { color: #d0d0d0; font-size: 13px; }
+
+/* Animated underline on focus */
+.lf-field::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: #990c52;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+.lf-field:focus-within::after { width: 100%; }
+
+/* Password */
+.lf-pass { position: relative; display: flex; align-items: center; }
+.lf-pass .lf-input { padding-right: 36px; }
+.lf-eye {
+  position: absolute;
+  right: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #ccc;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+}
+.lf-eye:hover { color: #990c52; }
+
+/* Options row */
+.lf-opts {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: -6px 0 28px;
+}
+.lf-remember {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12.5px;
+  color: #777;
+  cursor: pointer;
+  user-select: none;
+}
+.lf-chk {
+  width: 14px;
+  height: 14px;
+  accent-color: #990c52;
+  cursor: pointer;
+}
+.lf-forgot {
+  font-size: 12.5px;
+  color: #444;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.lf-forgot:hover { color: #990c52; }
+
+/* Login button */
+.lf-btn {
+  width: 100%;
+  padding: 15px;
+  background: #1a1a1a;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+  box-shadow: 0 4px 12px rgba(26,26,26,0.18);
+}
+.lf-btn:hover:not(:disabled) {
+  background: #990c52;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(153, 12, 82, 0.32);
+}
+.lf-btn:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(153, 12, 82, 0.20);
+}
+.lf-btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; box-shadow: none; }
+
+/* Spinner */
+.lf-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: lfspin 0.65s linear infinite;
+}
+@keyframes lfspin { to { transform: rotate(360deg); } }
+
+@media (max-width: 500px) {
+  .lf-wrap { padding: 36px 24px 24px; }
+  .lf-title { font-size: 20px; }
+}

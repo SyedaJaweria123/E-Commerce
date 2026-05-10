@@ -1,0 +1,211 @@
+<!-- ══════════════════════════════════════════
+     DRAWER — Har page par (sirf !isViewBagPage)
+══════════════════════════════════════════ -->
+<ng-container *ngIf="!isViewBagPage">
+
+  <!-- BACKDROP -->
+  <div class="cart-backdrop" [class.active]="cart.isCartOpen" (click)="cart.closeCart()"></div>
+
+  <!-- DRAWER -->
+  <div class="cart-drawer" [class.open]="cart.isCartOpen">
+
+    <!-- HEADER -->
+    <div class="drawer-header">
+      <h2 class="drawer-title">SHOPPING BAG</h2>
+      <button class="close-btn" (click)="cart.closeCart()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6 6 18M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- FREE SHIPPING BAR -->
+    <div class="shipping-bar">
+      <div class="ship-text" *ngIf="freeShippingLeft > 0">
+        🚚 FREE SHIPPING OVER Rs.{{ freeShippingThreshold | number }}
+      </div>
+      <div class="ship-text ship-unlocked" *ngIf="freeShippingLeft <= 0">
+        🎉 YOU HAVE EARNED FREE SHIPPING!
+      </div>
+      <div class="ship-sub" *ngIf="freeShippingLeft > 0">
+        Amount Left for Free Shipping: <strong>Rs.{{ freeShippingLeft | number }}</strong>
+      </div>
+      <div class="ship-progress-track">
+        <div class="ship-progress-fill" [style.width]="shippingProgress + '%'"></div>
+      </div>
+      <div class="ship-labels">
+        
+        <span>Rs.{{ freeShippingThreshold | number }}</span>
+      </div>
+    </div>
+
+    <!-- ITEMS -->
+    <div class="drawer-items">
+
+      <!-- EMPTY -->
+      <div class="empty-bag" *ngIf="cart.getItems().length === 0">
+        <div class="empty-icon">🛍️</div>
+        <h3>Your bag is empty</h3>
+        <p>Discover our premium skincare collection</p>
+        <button class="continue-btn" (click)="cart.closeCart()" routerLink="/shop">
+          Continue Shopping
+        </button>
+      </div>
+
+      <!-- ITEM CARDS -->
+      <div class="bag-item" *ngFor="let item of cart.getItems(); let i = index">
+        <div class="item-img">
+          <img [src]="item.image" [alt]="item.name">
+        </div>
+        <div class="item-details">
+          <h4 class="item-name">{{ item.name }}</h4>
+          <p class="item-price">Rs.{{ cart.parsePrice(item.price) | number }}</p>
+          <span class="in-stock">✔ In Stock</span>
+          <div class="item-actions">
+            <div class="qty-box">
+              <button class="qty-btn" (click)="cart.decrease(i)">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                  <path d="M5 12h14"/>
+                </svg>
+              </button>
+              <span class="qty-num">{{ item.qty }}</span>
+              <button class="qty-btn" (click)="cart.increase(i)">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                  <path d="M12 5v14M5 12h14"/>
+                </svg>
+              </button>
+            </div>
+            <button class="delete-btn" (click)="cart.remove(i)">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"/>
+                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                <path d="M10 11v6M14 11v6M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="drawer-footer" *ngIf="cart.getItems().length > 0">
+      <div class="subtotal-row">
+        <span class="subtotal-label">SUBTOTAL:</span>
+        <span class="subtotal-amount">Rs.{{ cart.getTotal() | number }}</span>
+      </div>
+      <div class="footer-btns">
+        <button class="btn-view-bag" routerLink="/addtocard" (click)="cart.closeCart()">VIEW BAG</button>
+        <button class="btn-checkout" routerLink="/checkout"  (click)="cart.closeCart()">CHECKOUT</button>
+      </div>
+      <button class="btn-continue" (click)="cart.closeCart()">CONTINUE SHOPPING</button>
+    </div>
+
+  </div>
+</ng-container>
+
+<!-- ══════════════════════════════════════════
+     VIEW BAG PAGE — sirf /addtocard route par
+══════════════════════════════════════════ -->
+<div class="bag-page" *ngIf="isViewBagPage">
+
+  <h1 class="bag-page-title">SHOPPING BAG</h1>
+
+  <!-- EMPTY -->
+  <div class="page-empty" *ngIf="cart.getItems().length === 0">
+    <div class="page-empty-icon">🛒</div>
+    <h2>Your Shopping Bag is Empty</h2>
+    <p>Looks like you haven't added anything yet.</p>
+    <button routerLink="/shop" class="page-shop-btn">CONTINUE SHOPPING</button>
+  </div>
+
+  <!-- TABLE + SUMMARY -->
+  <div class="bag-layout" *ngIf="cart.getItems().length > 0">
+
+    <!-- LEFT TABLE -->
+    <div class="bag-table-wrap">
+
+      <div class="table-head">
+        <span class="col-product">PRODUCT({{ cart.getTotalItems() }})</span>
+        <span class="col-price">PRICE</span>
+        <span class="col-qty">QUANTITY</span>
+        <span class="col-total">TOTAL</span>
+      </div>
+      <hr class="head-line">
+
+      <div class="table-row" *ngFor="let item of cart.getItems(); let i = index">
+        <div class="col-product product-cell">
+          <img [src]="item.image" [alt]="item.name" class="row-img">
+          <div class="row-info">
+            <h4>{{ item.name }}</h4>
+            <button class="row-delete" (click)="cart.remove(i)">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"/>
+                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                <path d="M10 11v6M14 11v6M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+              </svg>
+            </button>
+            <span class="row-stock">In Stock</span>
+          </div>
+        </div>
+        <div class="col-price price-cell">Rs.{{ cart.parsePrice(item.price) | number }}</div>
+        <div class="col-qty qty-cell">
+          <div class="row-qty-box">
+            <button class="row-qty-btn" (click)="cart.decrease(i)">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <path d="M5 12h14"/>
+              </svg>
+            </button>
+            <span>{{ item.qty }}</span>
+            <button class="row-qty-btn" (click)="cart.increase(i)">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <path d="M12 5v14M5 12h14"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="col-total total-cell">
+          Rs.{{ (cart.parsePrice(item.price) * item.qty) | number }}
+        </div>
+      </div>
+
+      <hr class="row-line">
+
+      <!-- ORDER NOTE -->
+      <div class="order-note">
+        <label>Add Order Note</label>
+        <textarea [(ngModel)]="orderNote" placeholder="How can we help you?" rows="4"></textarea>
+      </div>
+
+    </div>
+
+    <!-- RIGHT SUMMARY -->
+    <div class="bag-summary">
+      <div class="summary-row">
+        <span class="summary-label">SUBTOTAL:</span>
+        <span class="summary-amount">Rs.{{ cart.getTotal() | number }}</span>
+      </div>
+      <button class="summary-checkout-btn" routerLink="/checkout">CHECKOUT</button>
+      <div class="payment-icons">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/200px-Mastercard-logo.svg.png" alt="Mastercard" height="28">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/200px-Visa_Inc._logo.svg.png" alt="Visa" height="20">
+      </div>
+      <div class="summary-shipping">
+        <div class="sum-ship-labels">
+          
+          <span>Rs.{{ freeShippingThreshold | number }}</span>
+        </div>
+        <div class="sum-ship-track">
+          <div class="sum-ship-fill" [style.width]="shippingProgress + '%'"></div>
+        </div>
+        <div class="sum-ship-msg" *ngIf="freeShippingLeft > 0">
+          <span class="sum-ship-left">Rs.{{ freeShippingLeft | number }}</span> away from free shipping!
+        </div>
+        <div class="sum-ship-earned" *ngIf="freeShippingLeft <= 0">
+          🎉 CONGRATS! YOU HAVE EARNED FREE SHIPPING
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

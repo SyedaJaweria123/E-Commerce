@@ -1,0 +1,116 @@
+<!-- FONT AWESOME -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-text">
+    <h5 class="tagline">TODAY'S BEST DEAL</h5>
+    <h1 class="main-heading">
+      Most Essential <span>Skin Care</span> Products
+    </h1>
+    <p>Discover premium beauty products that enhance your natural glow and keep your skin healthy & radiant.</p>
+    <div class="hero-buttons">
+      <a routerLink="/shop"    class="btn-primary">🛍 Shop Now</a>
+      <a routerLink="/contact" class="btn-secondary">Contact</a>
+    </div>
+  </div>
+  <div class="hero-image">
+    <img src="assets/images/test.png" alt="Beauty Products" />
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     CATEGORY SLIDER
+     4 cards visible, prev/next arrows, dots
+══════════════════════════════════════════ -->
+<section class="cat-section">
+
+  <!-- HEADING -->
+  <div class="cat-heading">
+    <span class="cat-eyebrow">EXPLORE BY CATEGORY</span>
+    <h2>Shop Our Collections</h2>
+    <p>Find exactly what your skin needs — from serums to sunscreens</p>
+  </div>
+
+  <!-- SLIDER WRAPPER -->
+  <div class="slider-wrap">
+
+    <!-- PREV ARROW -->
+    <button class="slider-arrow prev" (click)="prevSlide()" [class.disabled]="currentSlide === 0">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m15 18-6-6 6-6"/>
+      </svg>
+    </button>
+
+    <!-- TRACK -->
+    <div class="slider-viewport">
+      <div class="slider-track" [style.transform]="'translateX(-' + (currentSlide * 25) + '%)'">
+
+        <div class="cat-card" *ngFor="let c of categories" (click)="goToCat(c)">
+          <div class="cat-card-img">
+            <img [src]="c.image" [alt]="c.label"
+              (error)="$any($event.target).src = c.fallback">
+            <div class="cat-card-overlay">
+              <span class="cat-explore-btn">Explore →</span>
+            </div>
+          </div>
+          <div class="cat-card-body">
+            <span class="cat-card-icon">{{ c.icon }}</span>
+            <h4>{{ c.label }}</h4>
+            <p>{{ c.desc }}</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- NEXT ARROW -->
+    <button class="slider-arrow next" (click)="nextSlide()" [class.disabled]="currentSlide >= maxSlide">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m9 18 6-6-6-6"/>
+      </svg>
+    </button>
+
+  </div>
+
+  <!-- DOTS -->
+  <div class="slider-dots">
+    <span class="s-dot"
+      *ngFor="let d of dotArray; let i = index"
+      [class.active]="i === currentSlide"
+      (click)="goToSlide(i)">
+    </span>
+  </div>
+
+</section>
+
+<!-- ══ HOW TO USE ══ -->
+<section class="brand-pro">
+  <div class="brand-container">
+    <div class="brand-img">
+      <img src="assets/images/pro.png" alt="Serum">
+    </div>
+    <div class="brand-text">
+      <h5 class="small-title">HOW TO USE</h5>
+      <div class="steps">
+        <p><b>Cleanse:</b> Start with a gentle face cleanser to remove dirt, oil, and makeup.</p>
+        <p><b>Apply Serum:</b> Take 2–3 drops and gently massage into skin using upward circular motions.</p>
+        <p><b>Absorb:</b> Allow the serum to fully absorb before applying additional products.</p>
+        <p><b>Moisturize:</b> Lock in hydration with a nourishing moisturizer.</p>
+        <p><b>Protect:</b> Finish with sunscreen to protect from harmful UV rays.</p>
+        <p><b>Consistency:</b> Use regularly as part of your daily skincare routine.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FEATURES ══ -->
+<section class="features">
+  <div class="feature-box" *ngFor="let item of features">
+    <div class="icon"><i [class]="item.icon"></i></div>
+    <h3>{{ item.title }}</h3>
+    <p>{{ item.desc }}</p>
+  </div>
+</section>

@@ -1,0 +1,41 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* ── Base ── */
+body {
+  font-family: Poppins, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.page { padding: 20px; }
+
+/* ── Cards (sirf .card class par, global nahi) ── */
+.card {
+  border-radius: 16px;
+  overflow: hidden;
+}
+.card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 15px 30px rgba(0,0,0,.1);
+}
+
+/* ── Images — sirf product images ko scale karein, SVG nahi ── */
+img:not(.no-hover) {
+  transition: all .4s ease;
+}
+
+/* NOTE: img:hover global transform HATA DIYA 
+   kyunki yeh SVG icons ko bhi affect kar raha tha
+   Har component apni images khud handle karta hai */
+
+/* ── Buttons — global border-radius HATA DIYA
+   kyunki yeh navbar icon buttons ko bhi affect kar raha tha
+   Har component ke buttons apni CSS mein styled hain ── */
+
+/* SVG icons ko ensure karein ke color inherit na ho white se ── */
+.icon-btn svg,
+.bn-item svg,
+button svg {
+  color: inherit;
+  display: block;
+}
